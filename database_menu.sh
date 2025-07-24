@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source list_tables.sh
 
 database_menu() {
@@ -6,6 +8,7 @@ database_menu() {
         choice=$(zenity --list --title="Database: $db_name" \
             --column="Action" --width=500 --height=400 \
             "Create Table" \
+            "List Tables" \
             "Back to Main Menu")
         
         [[ $? -ne 0 ]] && break
