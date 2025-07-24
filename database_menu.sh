@@ -2,6 +2,7 @@
 
 source list_tables.sh
 source drop_table.sh
+source insert_table.sh
 
 database_menu() {
     local db_name="$1"
@@ -11,6 +12,7 @@ database_menu() {
             "Create Table" \
             "List Tables" \
             "Drop Table" \
+            "Insert Table" \
             "Back to Main Menu")
         
         [[ $? -ne 0 ]] && break
@@ -32,6 +34,12 @@ database_menu() {
                 (
                     cd "$DB_DIR/$db_name" || exit
                     drop_table
+                )
+                ;;
+            "Insert Table") 
+                (
+                    cd "$DB_DIR/$db_name" || exit
+                    insert_table
                 )
                 ;;
             "Back to Main Menu") break ;;
