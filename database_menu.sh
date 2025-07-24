@@ -1,0 +1,22 @@
+database_menu() {
+    local db_name="$1"
+    while true; do
+        choice=$(zenity --list --title="Database: $db_name" \
+            --column="Action" --width=500 --height=400 \
+            "Create Table" \
+            "Back to Main Menu")
+        
+        [[ $? -ne 0 ]] && break
+
+        case "$choice" in
+            "Create Table") 
+                (
+                    cd "$DB_DIR/$db_name" || exit
+                    create_table
+                )
+                ;;
+            "Back to Main Menu") break ;;
+            *) zenity --error --text="Invalid option" ;;
+        esac
+    done
+}
