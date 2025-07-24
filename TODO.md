@@ -5,18 +5,20 @@
 ### ✅ DONE  
 - [x] Project Boilerplat   
 - [x] YAD vs Zenity GUI  
+- [x] Main Menu
+- [x] implement `list_tables.sh`
 
 ### ⏳ TODO  
-- [ ] Main Menu 
-- implement `list_tables.sh`
+-  
+- 
 
 ## 👨‍💻 OMAR TASKS  
 
 ### ✅ DONE  
-
+- [x] create_table.sh
 
 ### ⏳ TODO  
 
 
 ## 🔄 SHARED/UNASSIGNED  
-- [ ] Testing & validation  
+- [ ] Testing & validation 
