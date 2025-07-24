@@ -1,3 +1,5 @@
+source list_tables.sh
+
 database_menu() {
     local db_name="$1"
     while true; do
