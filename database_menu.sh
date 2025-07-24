@@ -20,6 +20,7 @@ database_menu() {
                     cd "$DB_DIR/$db_name" || exit
                     list_tables
                 )
+                ;;
             "Back to Main Menu") break ;;
             *) zenity --error --text="Invalid option" ;;
         esac
