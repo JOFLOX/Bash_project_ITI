@@ -1,7 +1,7 @@
 #!/bin/bash
-
+source create_table.sh
 # Global Variables
-DB_DIR="$HOME/dbms"  # Main database directory
+DB_DIR="./dbms"  # Main database directory
 TABLE_DATA_EXT=".data"
 TABLE_META_EXT=".meta"
 
@@ -83,11 +83,27 @@ drop_database() {
     fi
 }
 
-# Database Menu (Placeholder for next phase)
 database_menu() {
     local db_name="$1"
-    zenity --info --title="Connected to '$db_name'" \
-        --text="Database operations will be implemented in next phase\n\nSelected database: $db_name"
+    while true; do
+        choice=$(zenity --list --title="Database: $db_name" \
+            --column="Action" --width=500 --height=400 \
+            "Create Table" \
+            "Back to Main Menu")
+        
+        [[ $? -ne 0 ]] && break
+
+        case "$choice" in
+            "Create Table") 
+                (
+                    cd "$DB_DIR/$db_name" || exit
+                    create_table
+                )
+                ;;
+            "Back to Main Menu") break ;;
+            *) zenity --error --text="Invalid option" ;;
+        esac
+    done
 }
 
 # Main Menu
