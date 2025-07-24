@@ -8,7 +8,7 @@
 
 ### ⏳ TODO  
 - [ ] Main Menu 
-
+- implement `list_tables.sh`
 
 ## 👨‍💻 OMAR TASKS  
 
