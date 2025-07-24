@@ -20,7 +20,7 @@ create_table() {
         col_count=$(zenity --entry --title="Columns" --text="Enter number of columns:")
         [[ $? -ne 0 ]] && return  # User pressed cancel
 
-        if [[ "$col_count" -le 15 ]]; then
+        if [[ "$col_count" -le 15 && "$col_count" -ge 1 ]]; then
             break
         else
             zenity --error --text="Invalid column count. Please enter a number between 1 and 15."
@@ -42,7 +42,7 @@ create_table() {
             TRUE "string" FALSE "int")
 
         [[ -z "$col_type" ]] && return
-        
+
         col_names+=("$col_name")
         col_types+=("$col_type")
     done
