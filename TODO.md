@@ -10,9 +10,10 @@
 - [x] implement `form.sh`
 - [x] implement `insert_table.sh`
 - [x] implement `list_tables_radio.sh`
+- [x] implement `select_table.sh`
 
 ### ⏳ TODO  
-- [] implement `select_table.sh`
+-
 - 
 
 ## 👨‍💻 OMAR TASKS  
