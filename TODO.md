@@ -12,7 +12,7 @@
 - [x] implement `list_tables_radio.sh`
 
 ### ⏳ TODO  
--  
+- [] implement `select_table.sh`
 - 
 
 ## 👨‍💻 OMAR TASKS  
