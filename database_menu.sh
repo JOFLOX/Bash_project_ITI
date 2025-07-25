@@ -3,6 +3,7 @@
 source list_tables.sh
 source drop_table.sh
 source insert_table.sh
+source list_tables_radio.sh
 
 database_menu() {
     local db_name="$1"
@@ -39,7 +40,7 @@ database_menu() {
             "Insert Table") 
                 (
                     cd "$DB_DIR/$db_name" || exit
-                    insert_table
+                    list_tables_radio
                 )
                 ;;
             "Back to Main Menu") break ;;
