@@ -5,6 +5,7 @@ select_table() {
     local tb=""
     
     tb=$(list_tables_radio)
+    [[ $? -ne 0 || -z "$tb" ]] && return
 local meta_file="$tb.meta"
 local data_file="$tb.data"
 
