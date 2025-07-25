@@ -7,6 +7,7 @@ source list_tables_radio.sh
 source select_table.sh
 source create_table.sh
 source update_table.sh
+source delete_row.sh
 
 database_menu() {
     local db_name="$1"
@@ -19,6 +20,7 @@ database_menu() {
             "Insert Table" \
             "Select Table" \
             "Update Table" \
+            "Delete Row" \
             "Back to Main Menu")
         
         [[ $? -ne 0 ]] && break
@@ -58,6 +60,12 @@ database_menu() {
                     cd "$DB_DIR/$db_name" || exit
                     update_table
             ) ;;
+            "Delete Row") 
+                (
+                    cd "$DB_DIR/$db_name" || exit
+                    delete_row
+                )
+                ;;
             "Back to Main Menu") break ;;
             *) zenity --error --text="Invalid option" ;;
         esac
