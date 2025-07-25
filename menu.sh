@@ -1,6 +1,8 @@
 #!/bin/bash
 source create_table.sh
 source database_menu.sh
+source validate.sh
+
 # Global Variables
 DB_DIR="./dbms"  # Main database directory
 TABLE_DATA_EXT=".data"
@@ -25,8 +27,8 @@ create_database() {
     
     [[ $? -ne 0 ]] && return  # User canceled
     
-    if ! validate_identifier "$db_name"; then
-        zenity --error --text="Invalid name! Use letters/numbers/underscores, starting with letter"
+    if ! validate_create_db "$db_name"; then
+        create_database
         return
     fi
     
