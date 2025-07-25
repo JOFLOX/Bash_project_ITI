@@ -58,17 +58,17 @@ create_table() {
                     echo "FALSE" "${col_names[i]}"
                 fi
             done))
+        [[ $? -ne 0 || -z "$pk" ]] && return
     done
 
-    {
-        for i in "${!col_names[@]}"; do
-            if [[ "${col_names[i]}" == "$pk" ]]; then
-                echo "${col_names[i]}:${col_types[i]}:PK"
-            else
-                echo "${col_names[i]}:${col_types[i]}"
-            fi
-        done
-    } > "$table_name.meta"
+    > "$table_name.meta"
+    for i in "${!col_names[@]}"; do
+        if [[ "${col_names[i]}" == "$pk" ]]; then
+            echo "${col_names[i]}:${col_types[i]}:PK" >> "$table_name.meta"
+        else
+            echo "${col_names[i]}:${col_types[i]}:" >> "$table_name.meta"
+        fi
+    done
 
     touch "$table_name.data"
     zenity --info --text="Table '$table_name' created successfully!"
