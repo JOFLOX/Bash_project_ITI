@@ -22,10 +22,11 @@
 - [x] create_table.sh
 - [x] update_table.sh
 - [x] drop_table.sh
+- [x] delete_table.sh
+
 
 
 ### ⏳ TODO  
-- [] delete_table.sh
 
 ## 🔄 SHARED/UNASSIGNED  
 - [ ] Testing & validation 
