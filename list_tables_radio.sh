@@ -33,17 +33,17 @@ done
 # Display radiolist dialog
 local tb=""
 
-    while [[ -z "$tb" ]]; do
-        tb=$(zenity --list --radiolist --title="Select Table"\
-            --column "Select" --column "Column" \
-            $(for i in "${!tables[@]}"; do
-                if [[ $i -eq 0 ]]; then
-                    echo "TRUE" "${tables[i]}"
-                else
-                    echo "FALSE" "${tables[i]}"
-                fi
-            done))
-    done
+    
+tb=$(zenity --list --radiolist --title="Select Table"\
+    --column "Select" --column "Column" \
+    $(for i in "${!tables[@]}"; do
+        if [[ $i -eq 0 ]]; then
+            echo "TRUE" "${tables[i]}"
+        else
+            echo "FALSE" "${tables[i]}"
+        fi
+    done))
+
 
 # zenity --info --text="You selected: $tb"
 # create_zenity_form "$tb.meta" "$tb.data"
