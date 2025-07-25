@@ -15,3 +15,5 @@
 ## `insert_table.sh` 
 - used `list_tables_radio.sh` to select table
 - then use `form.sh` to insert data
+
+## UPDATE: files in normal flow

@@ -34,7 +34,7 @@ done
 local tb=""
 
     while [[ -z "$tb" ]]; do
-        tb=$(zenity --list --radiolist --title="Primary Key" \
+        tb=$(zenity --list --radiolist --title="Select Table"\
             --column "Select" --column "Column" \
             $(for i in "${!tables[@]}"; do
                 if [[ $i -eq 0 ]]; then
@@ -45,6 +45,7 @@ local tb=""
             done))
     done
 
-zenity --info --text="You selected: $tb"
-create_zenity_form "$tb.meta" "$tb.data"
+# zenity --info --text="You selected: $tb"
+# create_zenity_form "$tb.meta" "$tb.data"
+echo "$tb"
 }
