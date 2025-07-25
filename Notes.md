@@ -17,3 +17,12 @@
 - then use `form.sh` to insert data
 
 ## UPDATE: files in normal flow
+
+
+## the check of dbname is not case sensitive and always check with the lower case of the db name 
+
+## `validate.sh` 
+- check if db name is empty
+- check if db name is valid (start with letter/underscore + letters/numbers/underscores only, up to 64 chars)
+- check if db name is a reserved keyword
+- check if db already exists

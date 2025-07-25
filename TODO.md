@@ -11,7 +11,7 @@
 - [x] implement `insert_table.sh`
 - [x] implement `list_tables_radio.sh`
 - [x] implement `select_table.sh`
-
+- [x] implement DB create fun in `validate.sh`
 
 ### ⏳ TODO  
 - [ ] implement `validate.sh`
