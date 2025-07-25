@@ -13,13 +13,14 @@
 - [x] implement `select_table.sh`
 
 ### ⏳ TODO  
--
+- [] drop_table.sh
 - 
 
 ## 👨‍💻 OMAR TASKS  
 
 ### ✅ DONE  
 - [x] create_table.sh
+- [x] update_table.sh
 
 ### ⏳ TODO  
 
