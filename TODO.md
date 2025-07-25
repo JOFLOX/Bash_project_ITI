@@ -14,7 +14,7 @@
 
 
 ### ⏳ TODO  
-- 
+- [ ] implement `validate.sh`
 
 ## 👨‍💻 OMAR TASKS  
 
