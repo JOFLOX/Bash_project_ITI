@@ -1,9 +1,51 @@
 resevred_keywords=("select" "drop" "insert" "delete" "update" "table" "create" "int" "string" "from" "where" "null" "pk" "system" "default") 
 
-
 is_valid_name() {
     [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]{0,63}$ ]]
 }
+
+check_pk_not_empty() {
+    local field_name="$1"
+    local value="$2"
+
+    if [[ -z "$value" ]]; then
+        zenity --error --text="Primary key '$field_name' cannot be empty."
+        return 1
+    fi
+    return 0
+}
+
+validate_int() {
+    local field_name="$1"
+    local value="$2"
+
+    if ! [[ "$value" =~ ^-?[0-9]+$ ]]; then
+        zenity --error --text="$field_name must be an integer."
+        return 1
+    fi
+    return 0
+}
+
+check_duplicate_pk() {
+    local value="$1"
+    local column_index="$2"
+    local skip_row="$3"
+    local data_file="$4"
+
+    local line_num=1
+    while IFS= read -r line; do
+        if [[ $line_num -ne $skip_row ]]; then
+            IFS=':' read -ra fields <<< "$line"
+            if [[ "${fields[$column_index]}" == "$value" ]]; then
+                zenity --error --text="Primary key value '$value' already exists in another row."
+                return 1
+            fi
+        fi
+        ((line_num++))
+    done < "$data_file"
+    return 0
+}
+
 
 is_reserved_keyword() {
     local name_lower=$(echo "$1" | tr '[:upper:]' '[:lower:]')
