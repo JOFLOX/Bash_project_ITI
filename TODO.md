@@ -14,10 +14,11 @@
 - [x] implement DB create fun in `validate.sh`
 - [x] implement available_dbs fun in `validate.sh`
 - [x] implement valid_db_selection fun in `validate.sh`
--
+- [x] implement `create_table_refactored.sh`
 
 ### ⏳ TODO  
 - [ ] implement in `validate.sh`
+- [ ] refactor `create_table.sh` 
 
 
 

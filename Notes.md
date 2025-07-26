@@ -35,3 +35,12 @@
 ### valid_db_selection() used for connect and drop
 - check if user selected a database from search 
 -
+
+## `create_table_refactored.sh` used as a temp for `create_table.sh` 
+- validate table name
+- validate column count
+- validate column name
+- validate primary key type
+- create metadata file
+- create data file
+- show success message
