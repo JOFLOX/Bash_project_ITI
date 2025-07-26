@@ -1,3 +1,5 @@
+source validate.sh
+
 update_table() {
     local tb=""
     local selected_row=""
@@ -62,44 +64,16 @@ update_table() {
                 return
             fi
 
-            # Treat cancel (which may return empty) the same
-            if [[ -z "$input" && "$input" != "$original" ]]; then
-                zenity --info --text="Update cancelled."
-                return
-            fi
-
-            # PK check
-            if [[ "${pk_fields[$i]}" == "PK" && -z "$input" ]]; then
-                zenity --error --text="Primary key cannot be empty"
-                continue
-            fi
-
-            # INT validation
-            if [[ "$field_type" == "INT" && ! "$input" =~ ^-?[0-9]+$ ]]; then
-                zenity --error --text="$field_name must be an integer"
-                continue
-            fi
-
-            # Duplicate PK check
+            
             if [[ "${pk_fields[$i]}" == "PK" && "$input" != "$original" ]]; then
-                local duplicate_found=0
-                local line_num=1
-                while IFS= read -r line; do
-                    if [[ $line_num -ne $selected_row ]]; then
-                        IFS=':' read -ra fields <<< "$line"
-                        if [[ "${fields[$i]}" == "$input" ]]; then
-                            duplicate_found=1
-                            break
-                        fi
-                    fi
-                    ((line_num++))
-                done < "$data_file"
-                if [[ $duplicate_found -eq 1 ]]; then
-                    zenity --error --text="Primary key value '$input' already exists in another row."
-                    continue
-                fi
+                ! check_pk_not_empty "$field_name" "$input" && continue
+                ! check_duplicate_pk "$input" "$i" "$selected_row" "$data_file" && continue
             fi
 
+            if [[ "$field_type" == "INT" ]]; then
+                ! validate_int "$field_name" "$input" && continue
+            fi
+           
             new_values+=("$input")
             break
         done
