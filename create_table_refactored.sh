@@ -1,4 +1,4 @@
-local resevred_keywords=("select" "drop" "insert" "delete" "update" "table" "create" "int" "string" "from" "where" "null" "pk" "system" "default") 
+resevred_keywords=("select" "drop" "insert" "delete" "update" "table" "create" "int" "string" "from" "where" "null" "pk" "system" "default") 
 
 
 is_valid_name() {
@@ -81,7 +81,7 @@ validate_primary_key_type() {
     return 0
 }
 
-create_table() {
+create_table_refactored () {
     local table_name
 
     # ─── 1. Table Name ─────────────────────────
