@@ -1,3 +1,7 @@
+is_valid_name() {
+    [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]{0,63}$ ]]
+}
+
 validate_create_db() {
     local db_name="$1"
     local db_lower
@@ -10,7 +14,7 @@ validate_create_db() {
     fi
 
     # 2. Check for valid name pattern (start with letter/_ + letters/numbers/_ only, up to 64 chars)
-    if [[ ! "$db_name" =~ ^[a-zA-Z_][a-zA-Z0-9_]{0,63}$ ]]; then
+    if ! is_valid_name "$db_name" ; then
         zenity --error --text="Invalid database name!\n\nAllowed:\n- Start with letter/underscore\n- Only letters, numbers, underscores\n- Max 64 characters"
         return 1
     fi
