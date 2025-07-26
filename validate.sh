@@ -39,3 +39,14 @@ validate_create_db() {
 
     return 0
 }
+
+available_dbs() {
+       if [[ -z "$(ls -A "$DB_DIR")" ]]; then
+        zenity --info --text="No databases found"
+        return
+    fi
+    
+    local dbs
+    dbs=$(find "$DB_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort)
+    echo "$dbs"
+}

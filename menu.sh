@@ -33,38 +33,31 @@ create_database() {
     fi
     
     local db_path="$DB_DIR/$db_name"
-    if [[ -d "$db_path" ]]; then
-        zenity --error --text="Database '$db_name' already exists!"
-    else
-        mkdir -p "$db_path"
-        zenity --info --text="Database '$db_name' created successfully"
-    fi
+
+    mkdir -p "$db_path"
+    zenity --info --text="Database '$db_name' created successfully"
+
 }
 
 list_databases() {
-    if [[ -z "$(ls -A "$DB_DIR")" ]]; then
-        zenity --info --text="No databases found"
-        return
-    fi
-    
     local dbs
-    dbs=$(find "$DB_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort)
+    dbs=$(available_dbs)
     
-    zenity --list --title="Databases" --column="Database Name" $dbs
+    zenity --list --title="Databases" --text="List of databases:" \
+        --column="Database Name" $dbs
 }
 
 connect_database() {
-    if [[ -z "$(ls -A "$DB_DIR")" ]]; then
-        zenity --error --text="No databases available"
-        return
-    fi
-    
     local db_name
-    db_name=$(find "$DB_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | \
-              sort | zenity --list --title="Connect to Database" --column="Database Name")
+    db_name=$( available_dbs | zenity --list --title="Connect to Database" --column="Database Name")
     
-    [[ -z "$db_name" ]] && return  # User canceled
-    
+    [[ $? -ne 0 ]] && return  # User canceled
+   
+    if [[ -z "$db_name" ]]; then
+        zenity --error --text="Select a valid database from the listed options."
+        connect_database
+        return  # User canceled
+    fi
     database_menu "$db_name"
 }
 
@@ -94,6 +87,8 @@ main_menu() {
         choice=$(zenity --list --title="DBMS Main Menu" \
             --column="Option" \
             --width=700 --height=500 \
+            --cancel-label="Exit" \
+            --ok-label="Select" \
             "Create Database" \
             "List Databases" \
             "Connect to Database" \
