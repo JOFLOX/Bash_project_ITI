@@ -54,6 +54,89 @@ is_reserved_keyword() {
     done
     return 1
 }
+resevred_keywords=("select" "drop" "insert" "delete" "update" "table" "create" "int" "string" "from" "where" "null" "pk" "system" "default") 
+
+
+is_valid_name() {
+    [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]{0,63}$ ]]
+}
+
+is_reserved_keyword() {
+    local name_lower=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+    for word in "${resevred_keywords[@]}"; do
+        if [[ "$name_lower" == "$word" ]]; then return 0; fi
+    done
+    return 1
+}
+
+
+
+
+validate_table_name() {
+    local name="$1"
+
+    if [[ -z "$name" ]]; then
+        zenity --error --text="Table name cannot be empty."
+        return 1
+    elif ! is_valid_name "$name"; then
+        zenity --error --text="Invalid table name.\nMust start with a letter or underscore and use only letters, numbers, or underscores."
+        return 1
+    elif is_reserved_keyword "$name"; then
+        zenity --error --text="Table name '$name' is a reserved keyword."
+        return 1
+    elif [[ -e "$name.meta" ]]; then
+        zenity --error --text="Table '$name' already exists."
+        return 1
+    fi
+
+    return 0
+}
+
+validate_column_name() {
+    local name="$1"
+    local table_name="$2"
+    local existing_cols=("${@:3}")
+
+    if [[ -z "$name" ]]; then
+        zenity --error --text="Column name cannot be empty."
+        return 1
+    elif ! is_valid_name "$name"; then
+        zenity --error --text="Invalid column name. Must start with a letter/underscore and contain only letters, numbers, or underscores."
+        return 1
+    elif is_reserved_keyword "$name"; then
+        zenity --error --text="Column name '$name' is a reserved keyword."
+        return 1
+    elif [[ "$name" == "$table_name" ]]; then
+        zenity --error --text="Column name cannot be the same as the table name."
+        return 1
+    elif [[ " ${existing_cols[*]} " =~ " $name " ]]; then
+        zenity --error --text="Duplicate column name '$name'."
+        return 1
+    fi
+
+    return 0
+}
+
+validate_column_count() {
+    local count="$1"
+    [[ "$count" =~ ^[1-9][0-9]*$ && "$count" -le 15 ]]
+}
+
+
+validate_primary_key_type() {
+    local pk="$1"
+    local col_names=("${!2}")
+    local col_types=("${!3}")
+
+    for i in "${!col_names[@]}"; do
+        if [[ "${col_names[i]}" == "$pk" && "${col_types[i]}" != "int" ]]; then
+            zenity --error --text="Primary key '$pk' must be of type 'int'."
+            return 1
+        fi
+    done
+    return 0
+}
+
 
 validate_create_db() {
     local db_name="$1"
