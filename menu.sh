@@ -53,25 +53,30 @@ connect_database() {
     
     [[ $? -ne 0 ]] && return  # User canceled
    
-    if [[ -z "$db_name" ]]; then
-        zenity --error --text="Select a valid database from the listed options."
+    # if [[ -z "$db_name" ]]; then
+    #     zenity --error --text="Select a valid database from the listed options."
+    #     connect_database
+    #     return  # User canceled
+    # fi
+
+    if ! valid_db_selection "$db_name"; then
         connect_database
-        return  # User canceled
+        return
     fi
     database_menu "$db_name"
 }
 
 drop_database() {
-    if [[ -z "$(ls -A "$DB_DIR")" ]]; then
-        zenity --error --text="No databases available"
+
+    local db_name
+    db_name=$(available_dbs | zenity --list --title="Drop Database" --column="Database Name")
+    
+    [[ $? -ne 0  ]] && return
+
+    if ! valid_db_selection "$db_name"; then
+        drop_database
         return
     fi
-    
-    local db_name
-    db_name=$(find "$DB_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | \
-              sort | zenity --list --title="Drop Database" --column="Database Name")
-    
-    [[ -z "$db_name" ]] && return
     
     if zenity --question --text="Permanently delete '$db_name' and all its tables?"; then
         rm -rf "${DB_DIR:?}/${db_name:?}"  # Safe delete

@@ -50,3 +50,12 @@ available_dbs() {
     dbs=$(find "$DB_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort)
     echo "$dbs"
 }
+
+valid_db_selection() {
+    local db_name="$1"
+    if [[ -z "$db_name" ]]; then
+        zenity --error --text="Select a valid database from the listed options."
+        return 1
+    fi
+    return 0
+}
