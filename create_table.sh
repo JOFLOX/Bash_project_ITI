@@ -51,7 +51,7 @@ create_table () {
         done))
     [[ $? -ne 0 || -z "$pk" ]] && return
 
-    validate_primary_key_type "$pk" col_names[@] col_types[@] || return
+    # validate_primary_key_type "$pk" col_names[@] col_types[@] || return
 
     # ─── 5. Create Metadata and Data Files ─────
     > "$table_name.meta" || { zenity --error --text="Failed to create metadata file."; return; }
