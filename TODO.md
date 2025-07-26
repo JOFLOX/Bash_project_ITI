@@ -31,6 +31,7 @@
 - [x] update_table.sh
 - [x] drop_table.sh
 - [x] delete_table.sh
+- [x] integrate  `create_table_refactored.sh` with `create_table.sh`
 
 
 
