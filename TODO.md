@@ -12,9 +12,16 @@
 - [x] implement `list_tables_radio.sh`
 - [x] implement `select_table.sh`
 - [x] implement DB create fun in `validate.sh`
+- [x] implement available_dbs fun in `validate.sh`
+- [x] implement valid_db_selection fun in `validate.sh`
+-
 
 ### ⏳ TODO  
-- [ ] implement `validate.sh`
+- [ ] implement in `validate.sh`
+
+
+
+
 
 ## 👨‍💻 OMAR TASKS  
 
@@ -27,6 +34,11 @@
 
 
 ### ⏳ TODO  
+-
+
 
 ## 🔄 SHARED/UNASSIGNED  
 - [ ] Testing & validation 
+- [ ] Double check on the menu validation and edge cases
+- [ ] tables validation
+- [ ] tables values validation 

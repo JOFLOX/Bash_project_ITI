@@ -31,3 +31,7 @@
 ### available_dbs() used for list db and connect 
 - list all databases
 - check if no databases exist
+
+### valid_db_selection() used for connect and drop
+- check if user selected a database from search 
+-
