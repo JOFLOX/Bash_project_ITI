@@ -47,9 +47,6 @@ list_databases() {
         zenity --list --title="Databases" --text="List of databases:" \
         --column="Database Name" $dbs
    fi
-
-
-    
 }
 
 connect_database() {
