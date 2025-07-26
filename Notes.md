@@ -65,3 +65,4 @@
 ## `menu.sh` 
 - the list db function print the zenity list EVEN if no databases exist 
 - the create db show any new db created as exist if the dbms folder was empty
+- connect db function print the zenity list EVEN if no databases exist AND if user cancel the selection, the function is called again

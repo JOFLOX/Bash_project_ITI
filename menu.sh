@@ -47,13 +47,33 @@ list_databases() {
         zenity --list --title="Databases" --text="List of databases:" \
         --column="Database Name" $dbs
    fi
+
 }
 
 connect_database() {
+    local dbs
     local db_name
-    db_name=$( available_dbs | zenity --list --title="Connect to Database" --column="Database Name")
+    # db_name=$( available_dbs | zenity --list --title="Connect to Database" --column="Database Name")
+
+    dbs=$(available_dbs)
+
+    if [[ ! -z "$dbs" ]]; then
+        db_name=$(zenity --list --title="Databases" --text="Connect to Database:" \
+        --column="Database Name" $dbs)
+        
+        [[ $? -ne 0 ]] && return  # User canceled
+   
     
-    [[ $? -ne 0 ]] && return  # User canceled
+        if ! valid_db_selection "$db_name"; then
+            connect_database
+            return
+        fi
+    database_menu "$db_name"
+   fi
+
+
+    
+
    
     # if [[ -z "$db_name" ]]; then
     #     zenity --error --text="Select a valid database from the listed options."
@@ -61,11 +81,7 @@ connect_database() {
     #     return  # User canceled
     # fi
 
-    if ! valid_db_selection "$db_name"; then
-        connect_database
-        return
-    fi
-    database_menu "$db_name"
+ 
 }
 
 drop_database() {
