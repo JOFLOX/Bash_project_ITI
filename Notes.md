@@ -44,3 +44,24 @@
 - create metadata file
 - create data file
 - show success message
+
+
+## `database_menu.sh` 
+- database menu
+- call create table
+- call list tables
+- call drop table
+- call insert table
+- call select table
+- call update table
+- call delete row
+- call back to main menu
+
+## `welcome.sh` 
+- welcome screen
+
+
+# fixed
+## `menu.sh` 
+- the list db function print the zenity list EVEN if no databases exist 
+- the create db show any new db created as exist if the dbms folder was empty

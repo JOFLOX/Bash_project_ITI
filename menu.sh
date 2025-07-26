@@ -42,9 +42,14 @@ create_database() {
 list_databases() {
     local dbs
     dbs=$(available_dbs)
-    
-    zenity --list --title="Databases" --text="List of databases:" \
+
+    if [[ ! -z "$dbs" ]]; then
+        zenity --list --title="Databases" --text="List of databases:" \
         --column="Database Name" $dbs
+   fi
+
+
+    
 }
 
 connect_database() {

@@ -170,12 +170,18 @@ validate_create_db() {
     #         return 1
     #     fi
     # done
+
+
     if is_reserved_keyword "$db_name"; then
         zenity --error --text="Database name '$db_name' is a reserved keyword!"
         return 1
     fi
 
+
+
     # 5. Check if database already exists
+    db_lower=$(echo "$db_name" | tr '[:upper:]' '[:lower:]')
+
     if [ -d "$DB_DIR/$db_lower" ]; then
         zenity --error --text="Database '$db_name' already exists!"
         return 1
@@ -187,11 +193,11 @@ validate_create_db() {
 available_dbs() {
        if [[ -z "$(ls -A "$DB_DIR")" ]]; then
         zenity --info --text="No databases found"
-        return
+        return 
     fi
     
     local dbs
-    dbs=$(find "$DB_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort)
+    dbs="$(find "$DB_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort)"
     echo "$dbs"
 }
 
