@@ -8,7 +8,7 @@ source select_table.sh
 source create_table.sh
 source update_table.sh
 source delete_row.sh
-
+source create_table_refactored.sh
 database_menu() {
     local db_name="$1"
     while true; do
@@ -29,7 +29,7 @@ database_menu() {
             "Create Table") 
                 (
                     cd "$DB_DIR/$db_name" || exit
-                    create_table
+                    create_table_refactored
                 )
                 ;;
             "List Tables") 
