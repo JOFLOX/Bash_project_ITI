@@ -1,11 +1,22 @@
+local resevred_keywords=("select" "drop" "insert" "delete" "update" "table" "create" "int" "string" "from" "where" "null" "pk" "system" "default") 
+
+
 is_valid_name() {
     [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]{0,63}$ ]]
+}
+
+is_reserved_keyword() {
+    local name_lower=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+    for word in "${resevred_keywords[@]}"; do
+        if [[ "$name_lower" == "$word" ]]; then return 0; fi
+    done
+    return 1
 }
 
 validate_create_db() {
     local db_name="$1"
     local db_lower
-    local reserved_names=("create" "drop" "select" "insert" "delete" "system" "null" "default")
+    # local reserved_names=("create" "drop" "select" "insert" "delete" "system" "null" "default")
 
     # 1. Check if name is empty
     if [[ -z "$db_name" ]]; then
@@ -27,13 +38,17 @@ validate_create_db() {
     # fi
 
     # 4. Normalize and check reserved keywords
-    db_lower=$(echo "$db_name" | tr '[:upper:]' '[:lower:]')
-    for keyword in "${reserved_names[@]}"; do
-        if [[ "$db_lower" == "$keyword" ]]; then
-            zenity --error --text="Database name '$db_name' is a reserved keyword!"
-            return 1
-        fi
-    done
+    # db_lower=$(echo "$db_name" | tr '[:upper:]' '[:lower:]')
+    # for keyword in "${reserved_names[@]}"; do
+    #     if [[ "$db_lower" == "$keyword" ]]; then
+    #         zenity --error --text="Database name '$db_name' is a reserved keyword!"
+    #         return 1
+    #     fi
+    # done
+    if is_reserved_keyword "$db_name"; then
+        zenity --error --text="Database name '$db_name' is a reserved keyword!"
+        return 1
+    fi
 
     # 5. Check if database already exists
     if [ -d "$DB_DIR/$db_lower" ]; then
