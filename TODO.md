@@ -15,11 +15,12 @@
 - [x] implement available_dbs fun in `validate.sh`
 - [x] implement valid_db_selection fun in `validate.sh`
 - [x] implement `create_table_refactored.sh`
+- [x] fix `menu.sh` problems and validation
+-  
 
 ### ⏳ TODO  
 - [ ] implement in `validate.sh`
-- [ ] refactor `create_table.sh` 
-
+- [ ] fix `database_menu.sh`
 
 
 
@@ -36,7 +37,7 @@
 
 
 ### ⏳ TODO  
--
+- [ ] plz do validation and testing with edge cases on table functions (YOUSSEF) 
 
 
 ## 🔄 SHARED/UNASSIGNED  
