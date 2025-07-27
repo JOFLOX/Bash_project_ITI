@@ -3,6 +3,7 @@
 # Function to create a zenity form from a metadata file and save results to data file
 # Usage: create_zenity_form <metadata_file> <data_file>
 # Returns: 0 on success, non-zero on failure
+source validate.sh
 create_zenity_form() {
     local meta_file="$1"
     local data_file="$2"
@@ -121,6 +122,12 @@ create_zenity_form() {
             zenity --error --text="Primary key field '$field' cannot be empty"
             renter=1
             break
+        fi
+        if [[ "${pk_fields[$i]}" == "PK" ]]; then
+            if ! check_duplicate_pk "${form_values[$i]}" "$i" 0 "$data_file"; then
+                renter=1
+                break
+            fi
         fi
         
         # Validate integer fields
