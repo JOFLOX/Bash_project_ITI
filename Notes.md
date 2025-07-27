@@ -66,3 +66,5 @@
 - the list db function print the zenity list EVEN if no databases exist 
 - the create db show any new db created as exist if the dbms folder was empty
 - connect db function print the zenity list EVEN if no databases exist AND if user cancel the selection, the function is called again
+- drop db same as connect goes in infinite loop if no databases exist
+- create db checking if exist was wrong and only check in lower case and not case-insensitive

@@ -180,12 +180,29 @@ validate_create_db() {
 
 
     # 5. Check if database already exists
+    # db_lower=$(echo "$db_name" | tr '[:upper:]' '[:lower:]')
+
+    # if [ -d "$DB_DIR/$db_name" ]; then
+    #     zenity --error --text="Database '$db_name' already exists! as '$db_name'"
+    #     return 1
+    # fi
+
+    # Convert input to lowercase
     db_lower=$(echo "$db_name" | tr '[:upper:]' '[:lower:]')
 
-    if [ -d "$DB_DIR/$db_lower" ]; then
-        zenity --error --text="Database '$db_name' already exists!"
-        return 1
-    fi
+    # Loop over all existing databases
+    for existing_db in "$DB_DIR"/*; do
+        [ -d "$existing_db" ] || continue  # Skip non-directories
+        existing_name=$(basename "$existing_db")
+        existing_lower=$(echo "$existing_name" | tr '[:upper:]' '[:lower:]')
+
+        if [ "$db_lower" = "$existing_lower" ]; then
+            zenity --error --text="Database '$db_name' already exists as '$existing_name'"
+            return 1
+        fi
+    done
+
+
 
     return 0
 }
