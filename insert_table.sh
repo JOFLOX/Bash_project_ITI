@@ -84,6 +84,7 @@ insert_table() {
     local tb=""
     
     tb=$(list_tables_radio)
+    [[ $? -ne 0 || -z "$tb" ]] && return
     create_zenity_form "$tb.meta" "$tb.data"
-
+    
 }
