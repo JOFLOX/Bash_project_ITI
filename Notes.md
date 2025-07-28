@@ -68,14 +68,18 @@
 - connect db function print the zenity list EVEN if no databases exist AND if user cancel the selection, the function is called again
 - drop db same as connect goes in infinite loop if no databases exist
 - create db checking if exist was wrong and only check in lower case and not case-insensitive
+-
 
 ## `create_table.sh` 
 - some messages are not clear
 - showing column type in pk 
+- table check exist was wrong and only check in lower case and not case-insensitive
+-
 
 ## `drop_table.sh` 
 - if no tables exist, show message and return to menu
 - if user choosed wrong table, show error message and return to drop table
+-
 
 # Issues
 - enter column length message is not clear
@@ -83,5 +87,6 @@
 - insert: if pk string show error message "cant be empty" but in int show just must be int change to cant be empty
 - insert: doesnt check pk string exist 
 - update: from search bar just return to menu without any message, must show error message
+-
 
 
