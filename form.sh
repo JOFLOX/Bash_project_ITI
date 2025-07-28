@@ -127,7 +127,7 @@ create_zenity_form() {
             break
         fi
         if [[ "${pk_fields[$i]}" == "PK" ]]; then
-            if ! check_duplicate_pk "${form_values[$i]}" "$i" "$data_file"; then
+            if ! check_duplicate_pk "${form_values[$i]}" "$i" 0 "$data_file"; then
                 renter=1
                 break
             fi
