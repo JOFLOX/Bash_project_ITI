@@ -28,19 +28,18 @@ validate_int() {
 }
 
 check_duplicate_pk() {
-    local value="$1"
+    local value=$(echo "$1" | xargs)  # Trim whitespace
     local column_index="$2"
-    local skip_row="$3"
-    local data_file="$4"
+    local data_file="$3"
 
     local line_num=1
     while IFS= read -r line; do
-        if [[ $line_num -ne $skip_row ]]; then
             IFS=':' read -ra fields <<< "$line"
-            if [[ "${fields[$column_index]}" == "$value" ]]; then
+            local field_value=$(echo "${fields[$column_index]}" | xargs)
+
+            if [[ "$field_value" == "$value" ]]; then
                 zenity --error --text="Primary key value '$value' already exists in another row."
                 return 1
-            fi
         fi
         ((line_num++))
     done < "$data_file"

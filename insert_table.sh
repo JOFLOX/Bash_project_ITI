@@ -2,6 +2,18 @@
 source list_tables_radio.sh 
 source form.sh
 
+
+
+insert_table() {
+    local tb=""
+    
+    tb=$(list_tables_radio)
+    [[ $? -ne 0 || -z "$tb" ]] && return
+    create_zenity_form "$tb"
+    
+}
+
+
 # insert_table() {
 # echo " in insert_table"
 # pwd
@@ -80,11 +92,3 @@ source form.sh
 # zenity --info --title="Success" --text="Data saved successfully!"
 # }
 
-insert_table() {
-    local tb=""
-    
-    tb=$(list_tables_radio)
-    [[ $? -ne 0 || -z "$tb" ]] && return
-    create_zenity_form "$tb.meta" "$tb.data"
-    
-}

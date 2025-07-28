@@ -19,6 +19,7 @@
 - [x] fix `create_table.sh` 
 - [x] fix `list_tables.sh`
 - [x] fix `drop_table.sh`
+- [x] adjust `check_duplicate_pk()` unnecessary parameters
 
 ### ⏳ TODO  
 - [ ] implement in `validate.sh`
@@ -35,6 +36,7 @@
 - [x] drop_table.sh
 - [x] delete_table.sh
 - [x] integrate  `create_table_refactored.sh` with `create_table.sh`
+- [x] check_duplicate_pk()
 
 
 

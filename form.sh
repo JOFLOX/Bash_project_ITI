@@ -5,26 +5,27 @@
 # Returns: 0 on success, non-zero on failure
 source validate.sh
 create_zenity_form() {
-    local meta_file="$1"
-    local data_file="$2"
+    local meta_file="${1}.meta"
+    local data_file="${1}.data"
+   
     
-    # Validate arguments
-    if [ $# -ne 2 ]; then
-        echo "Usage: create_zenity_form <metadata_file> <data_file>" >&2
-        return 1
-    fi
+    # # Validate arguments
+    # if [ $# -ne 2 ]; then
+    #     echo "Usage: create_zenity_form <metadata_file> <data_file>" >&2
+    #     return 1
+    # fi
     
-    # Check if metadata file exists
-    if [ ! -f "$meta_file" ]; then
-        echo "Error: Metadata file '$meta_file' not found" >&2
-        return 1
-    fi
+    # # Check if metadata file exists
+    # if [ ! -f "$meta_file" ]; then
+    #     echo "Error: Metadata file '$meta_file' not found" >&2
+    #     return 1
+    # fi
     
-    # Check if metadata file is not empty
-    if [ ! -s "$meta_file" ]; then
-        echo "Error: Metadata file '$meta_file' is empty" >&2
-        return 1
-    fi
+    # # Check if metadata file is not empty
+    # if [ ! -s "$meta_file" ]; then
+    #     echo "Error: Metadata file '$meta_file' is empty" >&2
+    #     return 1
+    # fi
     
     local zenity_args=()
     local field_names=()
@@ -33,7 +34,7 @@ create_zenity_form() {
     
     # Build zenity command arguments
     zenity_args+=("--forms")
-    zenity_args+=("--title=Data Entry Form")
+    zenity_args+=("--title=Data Entry Form: $1 ")
     zenity_args+=("--text=Please fill in the following fields:")
     
     # Parse metadata file and build form
@@ -50,40 +51,42 @@ create_zenity_form() {
         field_names+=("$field_name")
         field_types+=("$field_type")
         pk_fields+=("$pk_flag")
+
+        # echo "field_name: $field_name, field_type: $field_type, pk_flag: $pk_flag"
         
         # Add appropriate zenity field based on type
-        case "${field_type^^}" in
-            "INT"|"INTEGER")
+        case "${field_type}" in
+            "int")
                 if [[ "$pk_flag" == "PK" ]]; then
-                    zenity_args+=("--add-entry=$field_name (ID - Integer)")
+                    zenity_args+=("--add-entry=$field_name (PK - Integer)")
                 else
                     zenity_args+=("--add-entry=$field_name (Integer)")
                 fi
                 ;;
-            "STRING"|"STR"|"TEXT")
+            "string")
                 if [[ "$pk_flag" == "PK" ]]; then
-                    zenity_args+=("--add-entry=$field_name (PK - Text)")
+                    zenity_args+=("--add-entry=$field_name (PK - String)")
                 else
-                    zenity_args+=("--add-entry=$field_name (Text)")
+                    zenity_args+=("--add-entry=$field_name (String)")
                 fi
                 ;;
             *)
                 # Default to string
-                if [[ "$pk_flag" == "PK" ]]; then
-                    zenity_args+=("--add-entry=$field_name (PK)")
-                else
-                    zenity_args+=("--add-entry=$field_name")
-                fi
-                ;;
+                # if [[ "$pk_flag" == "PK" ]]; then
+                #     zenity_args+=("--add-entry=$field_name (PK)")
+                # else
+                #     zenity_args+=("--add-entry=$field_name")
+                # fi
+             ;;
         esac
     done < "$meta_file"
     
     # Check if we have any fields
-    if [ ${#field_names[@]} -eq 0 ]; then
-        echo "Error: No valid fields found in metadata file" >&2
-        zenity --error --text="No valid fields found in metadata file"
-        return 1
-    fi
+    # if [ ${#field_names[@]} -eq 0 ]; then
+    #     echo "Error: No valid fields found in metadata file" >&2
+    #     zenity --error --text="No valid fields found in metadata file"
+    #     return 1
+    # fi
 
  
     # Execute zenity and capture output
@@ -113,27 +116,27 @@ create_zenity_form() {
     # Validate data types
     for i in "${!form_values[@]}"; do
         local value="${form_values[$i]}"
-        local type="${field_types[$i]^^}"
+        local type="${field_types[$i]}"
         local field="${field_names[$i]}"
         
         # Check for empty required fields (assuming PK fields are required)
         if [[ "${pk_fields[$i]}" == "PK" && -z "$value" ]]; then
-            echo "Error: Primary key field '$field' cannot be empty" >&2
+            # echo "Error: Primary key field '$field' cannot be empty" >&2
             zenity --error --text="Primary key field '$field' cannot be empty"
             renter=1
             break
         fi
         if [[ "${pk_fields[$i]}" == "PK" ]]; then
-            if ! check_duplicate_pk "${form_values[$i]}" "$i" 0 "$data_file"; then
+            if ! check_duplicate_pk "${form_values[$i]}" "$i" "$data_file"; then
                 renter=1
                 break
             fi
         fi
         
         # Validate integer fields
-        if [[ "$type" == "INT" || "$type" == "INTEGER" ]] && [[ -n "$value" ]]; then
+        if [[ "$type" == "int" ]] && [[ -n "$value" ]]; then
             if ! [[ "$value" =~ ^-?[0-9]+$ ]]; then
-                echo "Error: Field '$field' must be an integer, got: '$value'" >&2
+                # echo "Error: Field '$field' must be an integer, got: '$value'" >&2
                 zenity --error --text="Field '$field' must be an integer, got: '$value'"
                 renter=1
                 break
@@ -146,10 +149,10 @@ create_zenity_form() {
     fi
         break
 
-    # Create data file if it doesn't exist
-    if [ ! -f "$data_file" ]; then
-        touch "$data_file"
-    fi
+    # # Create data file if it doesn't exist
+    # if [ ! -f "$data_file" ]; then
+    #     touch "$data_file"
+    # fi
 done    
     # Build the data line (colon-separated values)
     local data_line=""
@@ -164,7 +167,8 @@ done
     # Append to data file
     echo "$data_line" >> "$data_file"
     
-    echo "Data successfully saved to '$data_file'"
+    # echo "Data successfully saved to '$data_file'"
+    zenity --info --text="Data saved to: $data_file file successfully!"
     return 0
 }
 
