@@ -365,7 +365,7 @@ This project was developed by:
   - 🐙 GitHub: @JOFLOX
 
 - **Omar Riad** - DevOps Engineer
-  - 📧 Email: alex.johnson@example.com
+  - 📧 Email: 
   - 🐙 GitHub: @OmarRiad
 
 
