@@ -25,7 +25,7 @@ create_table () {
     for ((i=1; i<=col_count; i++)); do
         local col_name=""
         while true; do
-            col_name=$(zenity --entry --title="Column $i" --text="Enter column $i name:")
+            col_name=$(zenity --entry --title="Column $i of $col_count" --text="Enter column $i name:")
             [[ $? -ne 0 ]] && return
             validate_column_name "$col_name" "$table_name" "${col_names[@]}" && break
         done
@@ -44,12 +44,21 @@ create_table () {
 
  # ─── 4. Primary Key ────────────────────────
     local pk=""
+    # pk=$(zenity --list --radiolist --title="Primary Key" \
+    #     --column "Select" --column "Column" \
+    #     $(for i in "${!col_names[@]}"; do
+    #         if [[ $i -eq 0 ]]; then echo "TRUE" "${col_names[i]}"; else echo "FALSE" "${col_names[i]}"; fi
+    #     done))
+    # [[ $? -ne 0 || -z "$pk" ]] && return
+
     pk=$(zenity --list --radiolist --title="Primary Key" \
-        --column "Select" --column "Column" \
+        --column "Select" --column "Column" --column "Type" \
         $(for i in "${!col_names[@]}"; do
-            if [[ $i -eq 0 ]]; then echo "TRUE" "${col_names[i]}"; else echo "FALSE" "${col_names[i]}"; fi
+            if [[ $i -eq 0 ]]; then echo "TRUE" "${col_names[i]}" "${col_types[i]}"; else echo "FALSE" "${col_names[i]}" "${col_types[i]}"; fi
         done))
     [[ $? -ne 0 || -z "$pk" ]] && return
+
+
 
     # validate_primary_key_type "$pk" col_names[@] col_types[@] || return
 

@@ -69,10 +69,15 @@
 - drop db same as connect goes in infinite loop if no databases exist
 - create db checking if exist was wrong and only check in lower case and not case-insensitive
 
+## `create_table.sh` 
+- some messages are not clear
+- showing column type in pk 
+
 # Issues
 - enter column length message is not clear
 - select if table empty dont show any data and show an info 
 - insert: if pk string show error message "cant be empty" but in int show just must be int change to cant be empty
 - insert: doesnt check pk string exist 
 - update: from search bar just return to menu without any message, must show error message
+
 

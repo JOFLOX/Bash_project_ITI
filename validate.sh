@@ -1,8 +1,9 @@
 resevred_keywords=("select" "drop" "insert" "delete" "update" "table" "create" "int" "string" "from" "where" "null" "pk" "system" "default") 
-
+name_error_msg="Invalid name!\n\nAllowed:\n- Start with letter/underscore\n- Contain letters/numbers/underscores\n- Max 64 characters"
 is_valid_name() {
     [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]{0,63}$ ]]
 }
+
 
 check_pk_not_empty() {
     local field_name="$1"
@@ -54,12 +55,8 @@ is_reserved_keyword() {
     done
     return 1
 }
-resevred_keywords=("select" "drop" "insert" "delete" "update" "table" "create" "int" "string" "from" "where" "null" "pk" "system" "default") 
 
 
-is_valid_name() {
-    [[ "$1" =~ ^[a-zA-Z_][a-zA-Z0-9_]{0,63}$ ]]
-}
 
 is_reserved_keyword() {
     local name_lower=$(echo "$1" | tr '[:upper:]' '[:lower:]')
@@ -79,7 +76,7 @@ validate_table_name() {
         zenity --error --text="Table name cannot be empty."
         return 1
     elif ! is_valid_name "$name"; then
-        zenity --error --text="Invalid table name.\nMust start with a letter or underscore and use only letters, numbers, or underscores."
+        zenity --error --text="$name_error_msg"
         return 1
     elif is_reserved_keyword "$name"; then
         zenity --error --text="Table name '$name' is a reserved keyword."
@@ -101,7 +98,7 @@ validate_column_name() {
         zenity --error --text="Column name cannot be empty."
         return 1
     elif ! is_valid_name "$name"; then
-        zenity --error --text="Invalid column name. Must start with a letter/underscore and contain only letters, numbers, or underscores."
+        zenity --error --text="$name_error_msg"
         return 1
     elif is_reserved_keyword "$name"; then
         zenity --error --text="Column name '$name' is a reserved keyword."
@@ -151,7 +148,7 @@ validate_create_db() {
 
     # 2. Check for valid name pattern (start with letter/_ + letters/numbers/_ only, up to 64 chars)
     if ! is_valid_name "$db_name" ; then
-        zenity --error --text="Invalid database name!\n\nAllowed:\n- Start with letter/underscore\n- Only letters, numbers, underscores\n- Max 64 characters"
+        zenity --error --text="$name_error_msg"
         return 1
     fi
 
