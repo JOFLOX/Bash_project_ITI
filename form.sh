@@ -98,7 +98,7 @@ create_zenity_form() {
     
     # Check if user cancelled or zenity failed
     if [ $exit_code -ne 0 ]; then
-        echo "Form cancelled by user" >&2
+        # echo "Form cancelled by user" >&2
         return $exit_code
     fi
     
