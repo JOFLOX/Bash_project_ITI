@@ -16,7 +16,9 @@
 - [x] implement valid_db_selection fun in `validate.sh`
 - [x] implement `create_table_refactored.sh`
 - [x] fix `menu.sh` problems and validation
--  
+- [x] fix `create_table.sh` 
+- [x] fix `list_tables.sh`
+- [x] fix `drop_table.sh`
 
 ### ⏳ TODO  
 - [ ] implement in `validate.sh`

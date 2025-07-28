@@ -223,3 +223,12 @@ valid_db_selection() {
     fi
     return 0
 }
+
+valid_tb_selection() {
+    local tb_name="$1"
+    if [[ -z "$tb_name" ]]; then
+        zenity --error --text="Select a valid table from the listed options."
+        return 1
+    fi
+    return 0
+}

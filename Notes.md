@@ -73,6 +73,10 @@
 - some messages are not clear
 - showing column type in pk 
 
+## `drop_table.sh` 
+- if no tables exist, show message and return to menu
+- if user choosed wrong table, show error message and return to drop table
+
 # Issues
 - enter column length message is not clear
 - select if table empty dont show any data and show an info 

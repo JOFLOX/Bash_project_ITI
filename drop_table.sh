@@ -18,7 +18,12 @@ drop_table() {
         --height=400 --width=300 \
         "${tables[@]}")
 
-    [[ -z "$table_to_delete" ]] && return  # Cancelled
+    # [[ -z "$table_to_delete" ]] && return  # Cancelled
+    [[ $? -ne 0 ]] && return  # Cancelled
+    if ! valid_tb_selection "$table_to_delete"; then
+        drop_table
+        return
+    fi
 
     # Confirm deletion
     zenity --question --text="Are you sure you want to drop table '$table_to_delete'?"
