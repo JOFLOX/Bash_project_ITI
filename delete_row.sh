@@ -29,7 +29,13 @@ delete_row() {
         --column="Row #" $(for name in "${col_names[@]}"; do echo --column="$name"; done) \
         "${entries[@]}" \
         --width=700 --height=400)
-    [[ $? -ne 0 || -z "$selected_row" ]] && return
+    [[ $? -ne 0 ]] && return
+
+    if [[ -z "$selected_row" ]]; then
+        zenity --error --text="Select a valid table from the listed options."
+        delete_row
+        return
+    fi
 
     # Confirm deletion
     zenity --question --text="Are you sure you want to delete row #$selected_row?"
