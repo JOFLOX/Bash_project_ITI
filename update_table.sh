@@ -35,7 +35,13 @@ update_table() {
         --column="Row #" $(for name in "${col_names[@]}"; do echo --column="$name"; done) \
         "${entries[@]}" \
         --width=700 --height=400)
-    [[ $? -ne 0 || -z "$selected_row" ]] && return
+    [[ $? -ne 0 ]] && return
+    
+    if [[ -z "$selected_row" ]]; then
+        zenity --error --text="Select a valid table from the listed options."
+        update_table
+        return 
+    fi
 
     # Extract original row content
     local orig_data
