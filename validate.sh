@@ -67,6 +67,27 @@ is_reserved_keyword() {
 }
 
 
+# ─── Function: Case-insensitive Table Existence Check ─────────────
+table_exists() {
+    local input_name="$1"
+    local input_lower
+    input_lower=$(echo "$input_name" | tr '[:upper:]' '[:lower:]')
+
+    for file in *.meta; do
+        local base_name="${file%.meta}" # we dont use the full path as in validat create db
+        local base_lower
+        base_lower=$(echo "$base_name" | tr '[:upper:]' '[:lower:]')
+
+        if [[ "$base_lower" == "$input_lower" ]]; then
+            echo "$base_name"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+
 
 
 validate_table_name() {
@@ -81,13 +102,25 @@ validate_table_name() {
     elif is_reserved_keyword "$name"; then
         zenity --error --text="Table name '$name' is a reserved keyword."
         return 1
-    elif [[ -e "$name.meta" ]]; then
-        zenity --error --text="Table '$name' already exists."
+    # elif [[ -e "$name.meta" ]]; then
+    #     zenity --error --text="Table '$name' already exists."
+    #     return 1
+    
+    elif existing=$(table_exists "$name"); then
+        zenity --error --text="Table '$name' already exists as '$existing'."
         return 1
+
     fi
 
     return 0
 }
+
+
+
+
+
+
+
 
 validate_column_name() {
     local name="$1"
