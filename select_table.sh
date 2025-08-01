@@ -36,15 +36,21 @@ done < "$meta_file"
 
     # Process data lines
     while IFS= read -r line; do
-        # Replace colons with tabs and ensure correct field count
-        awk -v cols="${#columns[@]}" -F: '
-        {
-            for (i = 1; i <= cols; i++) {
-                printf "%s", (i <= NF) ? $i : ""
-                if (i < cols) printf "\t"
-            }
-            printf "\n"
-        }' <<< "$line"
+        # Split line into fields first
+        IFS=':' read -ra fields <<< "$line"
+
+        # Unescape each field
+        for i in "${!fields[@]}"; do
+            fields[$i]="${fields[$i]//%3A/:}"
+        done
+
+        # Ensure correct number of fields
+        for ((i = ${#fields[@]}; i < ${#columns[@]}; i++)); do
+            fields+=("")
+        done
+
+        # Print fields tab-separated
+        printf "%s\n" "$(IFS=$'\t'; echo "${fields[*]}")"
     done < "$data_file"
 ) | {
     # Format with column if available, otherwise raw output
