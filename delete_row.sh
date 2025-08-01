@@ -20,6 +20,11 @@ delete_row() {
     local row_num=1
     while IFS= read -r line; do
         IFS=':' read -ra fields <<< "$line"
+        # Unescape %3A → :
+        for i in "${!fields[@]}"; do
+            fields[$i]="${fields[$i]//%3A/:}"
+        done
+
         entries+=("$row_num" "${fields[@]}")
         ((row_num++))
     done < "$data_file"
