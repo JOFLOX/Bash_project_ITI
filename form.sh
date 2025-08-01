@@ -157,12 +157,16 @@ done
     # Build the data line (colon-separated values)
     local data_line=""
     for i in "${!form_values[@]}"; do
+        # Escape any colon in user input
+        local escaped_value="${form_values[$i]//:/%3A}"
+
         if [ $i -eq 0 ]; then
-            data_line="${form_values[$i]}"
+            data_line="$escaped_value"
         else
-            data_line="$data_line:${form_values[$i]}"
+            data_line="$data_line:$escaped_value"
         fi
     done
+
     
     # Append to data file
     echo "$data_line" >> "$data_file"
