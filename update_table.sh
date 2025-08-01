@@ -26,6 +26,12 @@ update_table() {
     local row_num=1
     while IFS= read -r line; do
         IFS=':' read -ra fields <<< "$line"
+
+        # Unescape each field
+        for i in "${!fields[@]}"; do
+            fields[$i]="${fields[$i]//%3A/:}"
+        done
+
         entries+=("$row_num" "${fields[@]}")
         ((row_num++))
     done < "$data_file"
@@ -47,6 +53,11 @@ update_table() {
     local orig_data
     orig_data=$(sed -n "${selected_row}p" "$data_file")
     IFS=':' read -ra orig_values <<< "$orig_data"
+
+    # Unescape each field
+    for i in "${!orig_values[@]}"; do
+        orig_values[$i]="${orig_values[$i]//%3A/:}"
+    done
 
     # Collect new values
     local new_values=()
@@ -87,6 +98,12 @@ update_table() {
 
     # Update data
     local new_line
+    # Escape new values
+    for i in "${!new_values[@]}"; do
+        new_values[$i]="${new_values[$i]//:/%3A}"
+    done
+
+    # Join with colon and update
     new_line=$(IFS=:; echo "${new_values[*]}")
     awk -v ln="$selected_row" -v new="$new_line" 'NR==ln {$0=new} 1' "$data_file" > temp && mv temp "$data_file"
     zenity --info --text="Row updated successfully!"
